@@ -1,0 +1,44 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_and_attach_assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile TypeScript
+        run: npx tsc
+
+      - name: Bundle with Rollup
+        run: npx rollup -c
+
+      - name: Upload ScriptBoxMC.d.ts
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: '@types/ScriptBoxMC/index.d.ts'
+          asset_name: 'ScriptBoxMC.d.ts'
+          asset_content_type: 'text/plain'
+
+      - name: Upload ScriptBoxMC.js
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: 'scripts/ScriptBoxMC.js'
+          asset_name: 'ScriptBoxMC.js'
+          asset_content_type: 'text/javascript'
+
+      - name: Upload ScriptBoxMC.min.js
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: 'scripts/ScriptBoxMC.min.js'
+          asset_name: 'ScriptBoxMC.min.js'
+          asset_content_type: 'text/javascript'

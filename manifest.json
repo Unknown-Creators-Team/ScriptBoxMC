@@ -1,0 +1,33 @@
+{
+	"format_version": 2,
+	"header": {
+		"name": "ScriptBoxMC",
+		"description": "",
+		"uuid": "e6184db9-07e4-442b-8797-b87bf2e58168",
+		"version": [ 0, 0, 1 ],
+		"min_engine_version": [ 1, 21, 41 ]
+	},
+	"metadata": {
+		"authors": ["Nano191225", "arutaka1220"],
+		"url": "https://github.com/Unknown-Creators-Team/ScriptBoxMC"
+	},
+	"modules": [
+		{
+			"language": "javascript",
+			"type": "script",
+			"uuid": "28ae12a7-8eee-418b-a2ba-341cbb4596c0",
+			"version": [ 0, 0, 1 ],
+			"entry": "scripts/index.js"
+		}
+	],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.17.0-beta"
+		},
+        {
+			"module_name": "@minecraft/server-ui",
+			"version": "1.4.0-beta"
+		}
+	]
+}

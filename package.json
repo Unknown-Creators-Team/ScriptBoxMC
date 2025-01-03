@@ -1,0 +1,24 @@
+{
+  "name": "script-box-mc",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Unknown-Creators-Team/ScriptBoxMC.git"
+  },
+  "author": "Nano191225, arutaka1220",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/Unknown-Creators-Team/ScriptBoxMC/issues"
+  },
+  "homepage": "https://github.com/Unknown-Creators-Team/ScriptBoxMC#readme",
+  "devDependencies": {
+    "@minecraft/server": "1.17.0-beta.1.21.50-stable",
+    "@minecraft/server-ui": "1.4.0-beta.1.21.50-stable"
+  }
+}
