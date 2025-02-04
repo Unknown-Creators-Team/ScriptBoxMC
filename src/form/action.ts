@@ -2,56 +2,62 @@ import { Player, RawMessage } from "@minecraft/server";
 import { ActionFormData, FormCancelationReason, uiManager } from "@minecraft/server-ui";
 
 export class ActionFormBox {
-    private form: ActionFormData;
-    private callbacks: (() => void)[] = [];
-    // private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | null = null; NULL だ！！ころせ！！
-    private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | undefined;
+    /** @private */ private form: ActionFormData;
+    /** @private */ private callbacks: (() => void)[] = [];
+    // /** @private */ private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | null = null; NULL だ！！ころせ！！
+    /** @private */ private backCallback: ((player: Player) => void) | undefined;
+    /** @private */ private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | undefined;
 
     constructor(title?: string) {
         this.form = new ActionFormData();
-
         if (title) this.form.title(title);
     }
 
-    title(titleText: RawMessage | string): ActionFormBox {
+    public title(titleText: RawMessage | string): ActionFormBox {
         this.form.title(titleText);
-
         return this;
     }
 
-    body(bodyText: RawMessage | string): ActionFormBox {
+    public body(bodyText: RawMessage | string): ActionFormBox {
         this.form.body(bodyText);
-
         return this;
     }
 
-    button(text: RawMessage | string, iconPath?: string, callback?: () => void): ActionFormBox {
+    public button(text: RawMessage | string, iconPath?: string, callback?: () => void): ActionFormBox {
         this.form.button(text, iconPath);
-
         if (callback) this.callbacks.push(callback);
-
         return this;
     }
 
-    cancel(callback: (cancelationReason?: FormCancelationReason) => void): ActionFormBox {
+    public back(callback: (player: Player) => void): ActionFormBox {
+        this.backCallback = callback;
+        return this;
+    }
+
+    public cancel(callback: (cancelationReason?: FormCancelationReason) => void): ActionFormBox {
         this.cancelledCallback = callback;
-
         return this;
     }
 
-    async show(player: Player) {
+    public async show(player: Player) {
+        if (this.backCallback) this.form.button("Back", "textures/ui/arrowLeft.png");
+        this.form.button("Close", "textures/ui/redX1.png");
+
         const response = await this.form.show(player);
 
         if (response.canceled) {
             if (this.cancelledCallback) this.cancelledCallback(response.cancelationReason);
-
             return;
         }
 
-        if (response.selection === undefined) return;
+        if (response.selection === undefined) throw new Error("Selection is undefined");
+
+        if (response.selection === this.callbacks.length) {
+            if (this.backCallback) this.backCallback(player);
+            return;
+        }
 
         const callback = this.callbacks[response.selection];
-
         if (callback) callback();
     }
 }

@@ -1,4 +1,5 @@
 import { ColorUtils } from "./color.js";
 import { ItemStackUtils } from "./item.js";
-export { ColorUtils, ItemStackUtils };
+import { ScoreboardUtils } from "./scoreboard.js";
+export { ColorUtils, ItemStackUtils, ScoreboardUtils };
 //# sourceMappingURL=index.js.map

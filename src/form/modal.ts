@@ -2,11 +2,11 @@ import { Player, RawMessage } from "@minecraft/server";
 import { FormCancelationReason, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 
 export class ModalFormBox {
-    private form = new ModalFormData();
-    private bodyText: string | undefined;
-    private canSetBody = true;
-    private callbacks: ((player: Player, response: any) => void)[] = [];
-    private cancelCallback: ((player: Player, reason?: FormCancelationReason) => void) = () => {};
+    /** @private */ private form = new ModalFormData();
+    /** @private */ private bodyText: string | undefined;
+    /** @private */ private canSetBody = true;
+    /** @private */ private callbacks: ((player: Player, response: any) => void)[] = [];
+    /** @private */ private cancelCallback: ((player: Player, reason?: FormCancelationReason) => void) | undefined;
 
     public body(bodyText: string): ModalFormBox {
         if (!this.canSetBody) throw new Error("Cannot set body after adding elements");
@@ -36,7 +36,7 @@ export class ModalFormBox {
             if (this.cancelCallback) this.cancelCallback(player, response.cancelationReason);
             return response;
         }
-        for (const i in this.callbacks) if (response.formValues) this.callbacks[i](player, response.formValues[i]);
+        for (const i in this.callbacks) if (response.formValues?.length) this.callbacks[i](player, response.formValues[i]);
         return response;
     }
 
@@ -84,7 +84,7 @@ export class ModalFormBox {
         return this;
     }
 
-    private formatLabel(label: RawMessage | string): RawMessage | string {
+    /** @private */ private formatLabel(label: RawMessage | string): RawMessage | string {
         if (!this.canSetBody) return label;
         this.canSetBody = false;
         if (!this.bodyText) return label;

@@ -1,3 +1,5 @@
+
+/** @type {ColorUtils} */
 export namespace ColorUtils {
     export const ESCAPE = "§";
     export const MATCH_REGEXP = new RegExp(ESCAPE + "[0-9a-fk-or]", "g");

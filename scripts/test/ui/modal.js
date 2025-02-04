@@ -1,6 +1,8 @@
 import { ModalFormBox } from "form/modal.js";
 import { ScriptEvent } from "test/handler.js";
 function showBasicModalForm(player, log) {
+    // const players = world.getPlayers();
+    // console.warn("showBasicModalForm", players);
     const modalForm = new ModalFormBox().title("Example Modal Controls for §o§7ModalFormData§r");
     modalForm.toggle("Toggle w/o default");
     modalForm.toggle("Toggle w/ default", true);

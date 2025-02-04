@@ -1,9 +1,12 @@
 import { MessageFormData } from "@minecraft/server-ui";
 export class MessageFormBox {
-    form = new MessageFormData();
-    upperCallback;
-    lowerCallback;
-    cancelCallback;
+    /** @private */ form = new MessageFormData();
+    // /** @private */ private upperCallback: ((player: Player) => void) | null = null;
+    // /** @private */ private lowerCallback: ((player: Player) => void) | null = null; // NULL だ！！ころせ！！ (undefined軍)
+    // /** @private */ private cancelled: ((player: Player, cancelationReason?: FormCancelationReason) => void) | null = null;
+    /** @private */ upperCallback;
+    /** @private */ lowerCallback;
+    /** @private */ cancelCallback;
     constructor(title) {
         if (title)
             this.form.title(title);

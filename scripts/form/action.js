@@ -1,8 +1,10 @@
 import { ActionFormData } from "@minecraft/server-ui";
 export class ActionFormBox {
-    form;
-    callbacks = [];
-    cancelledCallback;
+    /** @private */ form;
+    /** @private */ callbacks = [];
+    // /** @private */ private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | null = null; NULL だ！！ころせ！！
+    /** @private */ backCallback;
+    /** @private */ cancelledCallback;
     constructor(title) {
         this.form = new ActionFormData();
         if (title)
@@ -22,11 +24,18 @@ export class ActionFormBox {
             this.callbacks.push(callback);
         return this;
     }
+    back(callback) {
+        this.backCallback = callback;
+        return this;
+    }
     cancel(callback) {
         this.cancelledCallback = callback;
         return this;
     }
     async show(player) {
+        if (this.backCallback)
+            this.form.button("Back", "textures/ui/arrowLeft.png");
+        this.form.button("Close", "textures/ui/redX1.png");
         const response = await this.form.show(player);
         if (response.canceled) {
             if (this.cancelledCallback)
@@ -34,7 +43,12 @@ export class ActionFormBox {
             return;
         }
         if (response.selection === undefined)
+            throw new Error("Selection is undefined");
+        if (response.selection === this.callbacks.length) {
+            if (this.backCallback)
+                this.backCallback(player);
             return;
+        }
         const callback = this.callbacks[response.selection];
         if (callback)
             callback();

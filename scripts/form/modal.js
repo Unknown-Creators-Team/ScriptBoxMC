@@ -1,10 +1,10 @@
 import { ModalFormData } from "@minecraft/server-ui";
 export class ModalFormBox {
-    form = new ModalFormData();
-    bodyText;
-    canSetBody = true;
-    callbacks = [];
-    cancelCallback = () => { };
+    /** @private */ form = new ModalFormData();
+    /** @private */ bodyText;
+    /** @private */ canSetBody = true;
+    /** @private */ callbacks = [];
+    /** @private */ cancelCallback;
     body(bodyText) {
         if (!this.canSetBody)
             throw new Error("Cannot set body after adding elements");
@@ -29,7 +29,7 @@ export class ModalFormBox {
             return response;
         }
         for (const i in this.callbacks)
-            if (response.formValues)
+            if (response.formValues?.length)
                 this.callbacks[i](player, response.formValues[i]);
         return response;
     }
@@ -59,7 +59,7 @@ export class ModalFormBox {
             this.callbacks.push(callback);
         return this;
     }
-    formatLabel(label) {
+    /** @private */ formatLabel(label) {
         if (!this.canSetBody)
             return label;
         this.canSetBody = false;

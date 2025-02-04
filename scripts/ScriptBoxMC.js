@@ -1,5 +1,5 @@
-import { Entity, Player, Block, EquipmentSlot, ItemStack, EnchantmentTypes, ItemLockMode } from '@minecraft/server';
-import { ActionFormData, MessageFormData, ModalFormData } from '@minecraft/server-ui';
+import { Entity, Player, Block, EquipmentSlot, world, ItemStack, EnchantmentTypes, ItemLockMode } from '@minecraft/server';
+import { uiManager, ActionFormData, MessageFormData, ModalFormData } from '@minecraft/server-ui';
 
 Object.defineProperties(Entity.prototype, {
     isPlayer: {
@@ -24,6 +24,10 @@ Object.defineProperties(Entity.prototype, {
         },
     },
     health: {
+        set: function (v) {
+            const com = this.getComponent("minecraft:health");
+            com?.setCurrentValue(v);
+        },
         get: function () {
             const com = this.getComponent("minecraft:health");
             return com?.currentValue;
@@ -38,17 +42,26 @@ Object.defineProperties(Player.prototype, {
             const result = this.runCommand(`kick ${JSON.stringify(this.name)} ${reason ?? ""}`);
             return result.successCount > 0;
         },
+        configurable: true
+    },
+    closeAllForms: {
+        value: function () {
+            uiManager.closeAllForms(this);
+        },
+        configurable: true
     },
     isRiding: {
         get: function () {
             const com = this.getComponent("minecraft:riding");
             return com?.entityRidingOn !== undefined;
         },
+        configurable: true
     },
     joinedAt: {
         get: function () {
             return this.getDynamicProperty("box@joinedAt");
         },
+        configurable: true
     },
     equip: {
         get: function () {
@@ -62,9 +75,17 @@ Object.defineProperties(Player.prototype, {
                 getOffHand: () => com?.getEquipment(EquipmentSlot.Offhand),
             };
         },
+        configurable: true
     },
 });
+world.afterEvents.playerSpawn.subscribe((ev) => {
+    const { player, initialSpawn } = ev;
+    if (initialSpawn) {
+        player.setDynamicProperty("box@joinedAt", Date.now());
+    }
+});
 console.warn("Player defined");
+// Player.prototype.getComponent("equippable")?.getEquipment
 
 Object.defineProperties(Block.prototype, {
     isPlayer: {
@@ -125,9 +146,11 @@ Object.defineProperties(ItemStack.prototype, {
 });
 
 class ActionFormBox {
-    form;
-    callbacks = [];
-    cancelledCallback = null;
+    /** @private */ form;
+    /** @private */ callbacks = [];
+    // /** @private */ private cancelledCallback: ((cancelationReason?: FormCancelationReason) => void) | null = null; NULL だ！！ころせ！！
+    /** @private */ backCallback;
+    /** @private */ cancelledCallback;
     constructor(title) {
         this.form = new ActionFormData();
         if (title)
@@ -147,11 +170,18 @@ class ActionFormBox {
             this.callbacks.push(callback);
         return this;
     }
+    back(callback) {
+        this.backCallback = callback;
+        return this;
+    }
     cancel(callback) {
         this.cancelledCallback = callback;
         return this;
     }
     async show(player) {
+        if (this.backCallback)
+            this.form.button("Back", "textures/ui/arrowLeft.png");
+        this.form.button("Close", "textures/ui/redX1.png");
         const response = await this.form.show(player);
         if (response.canceled) {
             if (this.cancelledCallback)
@@ -159,7 +189,12 @@ class ActionFormBox {
             return;
         }
         if (response.selection === undefined)
+            throw new Error("Selection is undefined");
+        if (response.selection === this.callbacks.length) {
+            if (this.backCallback)
+                this.backCallback(player);
             return;
+        }
         const callback = this.callbacks[response.selection];
         if (callback)
             callback();
@@ -167,10 +202,13 @@ class ActionFormBox {
 }
 
 class MessageFormBox {
-    form = new MessageFormData();
-    upperCallback = null;
-    lowerCallback = null;
-    cancelled = null;
+    /** @private */ form = new MessageFormData();
+    // /** @private */ private upperCallback: ((player: Player) => void) | null = null;
+    // /** @private */ private lowerCallback: ((player: Player) => void) | null = null; // NULL だ！！ころせ！！ (undefined軍)
+    // /** @private */ private cancelled: ((player: Player, cancelationReason?: FormCancelationReason) => void) | null = null;
+    /** @private */ upperCallback;
+    /** @private */ lowerCallback;
+    /** @private */ cancelCallback;
     constructor(title) {
         if (title)
             this.form.title(title);
@@ -194,14 +232,14 @@ class MessageFormBox {
         return this;
     }
     cancel(callback) {
-        this.cancelled = callback;
+        this.cancelCallback = callback;
         return this;
     }
     async show(player) {
         const response = await this.form.show(player);
         if (response.canceled) {
-            if (this.cancelled)
-                this.cancelled(player, response.cancelationReason);
+            if (this.cancelCallback)
+                this.cancelCallback(player, response.cancelationReason);
             return;
         }
         if (response.selection === 1) {
@@ -216,11 +254,11 @@ class MessageFormBox {
 }
 
 class ModalFormBox {
-    form = new ModalFormData();
-    bodyText;
-    canSetBody = true;
-    callbacks = [];
-    cancelCallback = null;
+    /** @private */ form = new ModalFormData();
+    /** @private */ bodyText;
+    /** @private */ canSetBody = true;
+    /** @private */ callbacks = [];
+    /** @private */ cancelCallback;
     body(bodyText) {
         if (!this.canSetBody)
             throw new Error("Cannot set body after adding elements");
@@ -245,7 +283,7 @@ class ModalFormBox {
             return response;
         }
         for (const i in this.callbacks)
-            if (response.formValues)
+            if (response.formValues?.length)
                 this.callbacks[i](player, response.formValues[i]);
         return response;
     }
@@ -275,7 +313,7 @@ class ModalFormBox {
             this.callbacks.push(callback);
         return this;
     }
-    formatLabel(label) {
+    /** @private */ formatLabel(label) {
         if (!this.canSetBody)
             return label;
         this.canSetBody = false;
@@ -292,6 +330,7 @@ class ModalFormBox {
     }
 }
 
+/** @type {ColorUtils} */
 var ColorUtils;
 (function (ColorUtils) {
     ColorUtils.ESCAPE = "§";
@@ -306,6 +345,7 @@ var ColorUtils;
     ColorUtils.includesColor = includesColor;
 })(ColorUtils || (ColorUtils = {}));
 
+/** @type {ItemStackUtils} */
 var ItemStackUtils;
 (function (ItemStackUtils) {
     function toJSON(item) {
@@ -419,4 +459,45 @@ var ItemStackUtils;
     ItemStackUtils.minimizeJSON = minimizeJSON;
 })(ItemStackUtils || (ItemStackUtils = {}));
 
-export { ActionFormBox, ColorUtils, ItemStackUtils, MessageFormBox, ModalFormBox };
+/** @type {ScoreboardUtils} */
+var ScoreboardUtils;
+(function (ScoreboardUtils) {
+    function addObjective(id, display) {
+        return world.scoreboard.addObjective(id, display);
+    }
+    ScoreboardUtils.addObjective = addObjective;
+    function getObjective(id) {
+        const object = world.scoreboard.getObjective(id);
+        if (!object)
+            return addObjective(id);
+        return object;
+    }
+    ScoreboardUtils.getObjective = getObjective;
+    function deleteObjective(id) {
+        return world.scoreboard.removeObjective(id);
+    }
+    ScoreboardUtils.deleteObjective = deleteObjective;
+    function getScore(target, objective) {
+        try {
+            return getObjective(objective).getScore(target);
+        }
+        catch {
+            return undefined;
+        }
+    }
+    ScoreboardUtils.getScore = getScore;
+    function addScore(target, objective, value) {
+        return getObjective(objective).addScore(target, value);
+    }
+    ScoreboardUtils.addScore = addScore;
+    function setScore(target, objective, value) {
+        return getObjective(objective).setScore(target, value);
+    }
+    ScoreboardUtils.setScore = setScore;
+    function resetScore(target, objective) {
+        return getObjective(objective).removeParticipant(target);
+    }
+    ScoreboardUtils.resetScore = resetScore;
+})(ScoreboardUtils || (ScoreboardUtils = {}));
+
+export { ActionFormBox, ColorUtils, ItemStackUtils, MessageFormBox, ModalFormBox, ScoreboardUtils };

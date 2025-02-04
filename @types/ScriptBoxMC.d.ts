@@ -45,13 +45,12 @@ declare module "@minecraft/server" {
             removeEnchant(enchantment: EnchantmentType | string): void;
             removeAllEnchants(): void;
             hasEnchant(enchantment: EnchantmentType | string): boolean;
-        }
+        };
         // toJSON(): string;
         // static fromJSON(json: string): ItemStack;
         // static fromJSON(json: string): ItemStack;
     }
 }
-
 
 declare module "@minecraft/server-ui" {
     /**
@@ -201,121 +200,160 @@ declare module "@minecraft/server-ui" {
     //     show(player: Minecraft.Player): Promise<void>;
     // }
 
-    // /**
-    //  * Used to create a fully customizable pop-up form for a
-    //  * player.
-    //  * @example showBasicModalForm.ts
-    //  * ```typescript
-    //  * import { world, DimensionLocation } from "@minecraft/server";
-    //  * import { ModalFormData } from "@minecraft/server-ui";
-    //  *
-    //  * function showBasicModalForm(log: (message: string, status?: number) => void, targetLocation: DimensionLocation) {
-    //  *   const players = world.getPlayers();
-    //  *
-    //  *   const modalForm = new ModalFormData().title("Example Modal Controls for §o§7ModalFormData§r");
-    //  *
-    //  *   modalForm.toggle("Toggle w/o default");
-    //  *   modalForm.toggle("Toggle w/ default", true);
-    //  *
-    //  *   modalForm.slider("Slider w/o default", 0, 50, 5);
-    //  *   modalForm.slider("Slider w/ default", 0, 50, 5, 30);
-    //  *
-    //  *   modalForm.dropdown("Dropdown w/o default", ["option 1", "option 2", "option 3"]);
-    //  *   modalForm.dropdown("Dropdown w/ default", ["option 1", "option 2", "option 3"], 2);
-    //  *
-    //  *   modalForm.textField("Input w/o default", "type text here");
-    //  *   modalForm.textField("Input w/ default", "type text here", "this is default");
-    //  *
-    //  *   modalForm
-    //  *     .show(players[0])
-    //  *     .then((formData) => {
-    //  *       players[0].sendMessage(`Modal form results: ${JSON.stringify(formData.formValues, undefined, 2)}`);
-    //  *     })
-    //  *     .catch((error: Error) => {
-    //  *       log("Failed to show form: " + error);
-    //  *       return -1;
-    //  *     });
-    //  * }
-    //  * ```
-    //  */
-    // class ModalFormBox {
-    //     /**
-    //      * @remarks
-    //      * Method that sets the body text for the modal form.
-    //      *
-    //      */
-    //     body(bodyText: string): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * Method that sets the callback for when the form is
-    //      * cancelled.
-    //      *
-    //      */
-    //     cancel(callback: (player: Player, reason?: FormCancelationReason) => void): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * Adds a dropdown with choices to the form.
-    //      *
-    //      */
-    //     dropdown(
-    //         label: RawMessage | string,
-    //         options: (RawMessage | string)[],
-    //         defaultValueIndex?: number,
-    //         callback?: (player: Player, response: string) => void
-    //     ): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * Creates and shows this modal popup form. Returns
-    //      * asynchronously when the player confirms or cancels the
-    //      * dialog.
-    //      *
-    //      * This function can't be called in read-only mode.
-    //      *
-    //      * @param player
-    //      * Player to show this dialog to.
-    //      * @throws This function can throw errors.
-    //      */
-    //     show(player: Player): Promise<ModalFormResponse>;
-    //     /**
-    //      * @remarks
-    //      * Adds a numeric slider to the form.
-    //      *
-    //      */
-    //     slider(
-    //         label: RawMessage | string,
-    //         minimumValue: number,
-    //         maximumValue: number,
-    //         valueStep: number,
-    //         defaultValue?: number,
-    //         callback?: (player: Player, response: number) => void
-    //     ): ModalFormBox;
-    //     submitButton(submitButtonText: RawMessage | string): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * Adds a textbox to the form.
-    //      *
-    //      */
-    //     textField(
-    //         label: RawMessage | string,
-    //         placeholder?: RawMessage | string,
-    //         defaultValue?: string,
-    //         callback?: (player: Player, response: string) => void
-    //     ): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * This builder method sets the title for the modal dialog.
-    //      *
-    //      */
-    //     title(titleText: RawMessage | string): ModalFormBox;
-    //     /**
-    //      * @remarks
-    //      * Adds a toggle checkbox button to the form.
-    //      *
-    //      */
-    //     toggle(
-    //         label: RawMessage | string,
-    //         defaultValue?: boolean,
-    //         callback?: (player: Player, response: boolean) => void
-    //     ): ModalFormBox;
-    // }
+    /**
+     * Used to create a fully customizable pop-up form for a
+     * player.
+     * @example showBasicModalForm.ts
+     * ```typescript
+     * import { world, DimensionLocation } from "@minecraft/server";
+     * import { ModalFormData } from "@minecraft/server-ui";
+     *
+     * function showBasicModalForm(log: (message: string, status?: number) => void, targetLocation: DimensionLocation) {
+     *   const players = world.getPlayers();
+     *
+     *   const modalForm = new ModalFormData().title("Example Modal Controls for §o§7ModalFormData§r");
+     *
+     *   modalForm.toggle("Toggle w/o default");
+     *   modalForm.toggle("Toggle w/ default", true);
+     *
+     *   modalForm.slider("Slider w/o default", 0, 50, 5);
+     *   modalForm.slider("Slider w/ default", 0, 50, 5, 30);
+     *
+     *   modalForm.dropdown("Dropdown w/o default", ["option 1", "option 2", "option 3"]);
+     *   modalForm.dropdown("Dropdown w/ default", ["option 1", "option 2", "option 3"], 2);
+     *
+     *   modalForm.textField("Input w/o default", "type text here");
+     *   modalForm.textField("Input w/ default", "type text here", "this is default");
+     *
+     *   modalForm
+     *     .show(players[0])
+     *     .then((formData) => {
+     *       players[0].sendMessage(`Modal form results: ${JSON.stringify(formData.formValues, undefined, 2)}`);
+     *     })
+     *     .catch((error: Error) => {
+     *       log("Failed to show form: " + error);
+     *       return -1;
+     *     });
+     * }
+     * ```
+     */
+    class ModalFormBox {
+        private form: ModalFormData;
+        private bodyText: string | undefined;
+        private canSetBody: boolean;
+        private callbacks: ((player: Player, response: any) => void)[];
+        private backCallback: (player: Player) => void;
+        private cancelCallback: (player: Player, reason?: FormCancelationReason) => void;
+        private formatLabel(label: RawMessage | string): string;
+        /**
+         * @remarks
+         * Method that sets the callback for when the form is
+         *
+         */
+        back(callback: (player: Player) => void): ModalFormBox;
+        /**
+         * @remarks
+         * Method that sets the body text for the modal form.
+         *
+         */
+        body(bodyText: string): ModalFormBox;
+        /**
+         * @remarks
+         * Method that sets the callback for when the form is
+         * cancelled.
+         *
+         */
+        cancel(callback: (player: Player, reason?: FormCancelationReason) => void): ModalFormBox;
+        /**
+         * @remarks
+         * Adds a dropdown with choices to the form.
+         *
+         */
+        dropdown(
+            label: RawMessage | string,
+            options: (RawMessage | string)[],
+            defaultValueIndex?: number,
+            callback?: (player: Player, response: string) => void
+        ): ModalFormBox;
+        /**
+         * @remarks
+         * Creates and shows this modal popup form. Returns
+         * asynchronously when the player confirms or cancels the
+         * dialog.
+         *
+         * This function can't be called in read-only mode.
+         *
+         * @param player
+         * Player to show this dialog to.
+         * @throws This function can throw errors.
+         */
+        show(player: Player): Promise<ModalFormResponse>;
+        /**
+         * @remarks
+         * Adds a numeric slider to the form.
+         *
+         */
+        slider(
+            label: RawMessage | string,
+            minimumValue: number,
+            maximumValue: number,
+            valueStep: number,
+            defaultValue?: number,
+            callback?: (player: Player, response: number) => void
+        ): ModalFormBox;
+        submitButton(submitButtonText: RawMessage | string): ModalFormBox;
+        /**
+         * @remarks
+         * Adds a textbox to the form.
+         *
+         */
+        textField(
+            label: RawMessage | string,
+            placeholder?: RawMessage | string,
+            defaultValue?: string,
+            callback?: (player: Player, response: string) => void
+        ): ModalFormBox;
+        /**
+         * @remarks
+         * This builder method sets the title for the modal dialog.
+         *
+         */
+        title(titleText: RawMessage | string): ModalFormBox;
+        /**
+         * @remarks
+         * Adds a toggle checkbox button to the form.
+         *
+         */
+        toggle(
+            label: RawMessage | string,
+            defaultValue?: boolean,
+            callback?: (player: Player, response: boolean) => void
+        ): ModalFormBox;
+    }
+}
+
+declare global {
+    interface ColorUtils {
+        ESCAPE: string;
+        MATCH_REGEXP: RegExp;
+
+        clean(text: string): string;
+        includesColor(text: string): boolean;
+    }
+
+    interface ItemStackUtils {
+        fromJSON(json: string): Minecraft.ItemStack;
+        toJSON(item: Minecraft.ItemStack): string;
+        minimizeJSON(json: string): string;
+    }
+
+    interface ScoreboardUtils {
+        addObjective(id: string, display?: string): Minecraft.ScoreboardObjective;
+        getObjective(id: string): Minecraft.ScoreboardObjective;
+        deleteObjective(id: string): boolean;
+        getScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string): number | undefined;
+        addScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string, value: number): number;
+        setScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string, value: number): void;
+        resetScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string): boolean;
+    }
 }
