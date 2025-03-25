@@ -32,5 +32,4 @@ Object.defineProperties(Entity.prototype, {
         },
     },
 });
-console.warn(`Entity defined`);
 //# sourceMappingURL=entity.js.map

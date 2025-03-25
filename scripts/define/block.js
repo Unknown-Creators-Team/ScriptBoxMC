@@ -16,5 +16,4 @@ Object.defineProperties(Block.prototype, {
         },
     },
 });
-console.warn("Block defined");
 //# sourceMappingURL=block.js.map

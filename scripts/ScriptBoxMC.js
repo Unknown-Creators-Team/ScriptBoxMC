@@ -1,4 +1,4 @@
-import { Entity, Player, Block, EquipmentSlot, world, ItemStack, EnchantmentTypes, ItemLockMode } from '@minecraft/server';
+import { Entity, Block, Player, EquipmentSlot, world, ItemStack, EnchantmentTypes, ItemLockMode } from '@minecraft/server';
 import { uiManager, ActionFormData, MessageFormData, ModalFormData } from '@minecraft/server-ui';
 
 Object.defineProperties(Entity.prototype, {
@@ -34,7 +34,6 @@ Object.defineProperties(Entity.prototype, {
         },
     },
 });
-console.warn(`Entity defined`);
 
 Object.defineProperties(Player.prototype, {
     kick: {
@@ -84,7 +83,6 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
         player.setDynamicProperty("box@joinedAt", Date.now());
     }
 });
-console.warn("Player defined");
 // Player.prototype.getComponent("equippable")?.getEquipment
 
 Object.defineProperties(Block.prototype, {
@@ -104,7 +102,6 @@ Object.defineProperties(Block.prototype, {
         },
     },
 });
-console.warn("Block defined");
 
 Object.defineProperties(ItemStack.prototype, {
     enchantment: {

@@ -48,6 +48,5 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
         player.setDynamicProperty("box@joinedAt", Date.now());
     }
 });
-console.warn("Player defined");
 // Player.prototype.getComponent("equippable")?.getEquipment
 //# sourceMappingURL=player.js.map
