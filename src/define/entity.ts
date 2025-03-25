@@ -33,4 +33,3 @@ Object.defineProperties(Entity.prototype, {
         },
     },
 });
-console.warn(`Entity defined`);

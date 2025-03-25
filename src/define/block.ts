@@ -17,5 +17,3 @@ Object.defineProperties(Block.prototype, {
         },
     },
 });
-
-console.warn("Block defined");

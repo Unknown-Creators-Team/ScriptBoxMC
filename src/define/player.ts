@@ -52,6 +52,4 @@ world.afterEvents.playerSpawn.subscribe((ev) => {
     }
 });
 
-console.warn("Player defined");
-
 // Player.prototype.getComponent("equippable")?.getEquipment
