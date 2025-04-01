@@ -1,5 +1,5 @@
 import { Player, RawMessage } from "@minecraft/server";
-import { ActionFormData, FormCancelationReason, uiManager } from "@minecraft/server-ui";
+import { ActionFormData, ActionFormResponse, FormCancelationReason, uiManager } from "@minecraft/server-ui";
 
 export class ActionFormBox {
     /** @private */ private form: ActionFormData;
@@ -39,7 +39,7 @@ export class ActionFormBox {
         return this;
     }
 
-    public async show(player: Player) {
+    public async show(player: Player): Promise<ActionFormResponse> {
         if (this.backCallback) this.form.button("Back", "textures/ui/arrowLeft.png");
         this.form.button("Close", "textures/ui/redX1.png");
 
@@ -47,17 +47,18 @@ export class ActionFormBox {
 
         if (response.canceled) {
             if (this.cancelledCallback) this.cancelledCallback(response.cancelationReason);
-            return;
+            return response;
         }
 
         if (response.selection === undefined) throw new Error("Selection is undefined");
 
         if (response.selection === this.callbacks.length) {
             if (this.backCallback) this.backCallback(player);
-            return;
+            return response;
         }
 
         const callback = this.callbacks[response.selection];
         if (callback) callback();
+        return response;
     }
 }

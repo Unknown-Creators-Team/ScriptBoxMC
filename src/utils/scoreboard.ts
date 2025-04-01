@@ -1,6 +1,5 @@
 import { Entity, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
 
-/** @type {ScoreboardUtils} */
 export namespace ScoreboardUtils {
     export function addObjective(id: string, display?: string): ScoreboardObjective {
         return world.scoreboard.addObjective(id, display);

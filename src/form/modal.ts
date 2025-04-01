@@ -19,14 +19,29 @@ export class ModalFormBox {
         return this;
     }
 
+    public divider(): ModalFormBox {
+        this.form.divider();
+        return this;
+    }
+
     public dropdown(
         label: RawMessage | string,
         options: (RawMessage | string)[],
         defaultValueIndex?: number,
-        callback?: (player: Player, response: string) => void
+        callback?: (player: Player, response: number) => void
     ): ModalFormBox {
         this.form.dropdown(this.formatLabel(label), options, defaultValueIndex);
         if (callback) this.callbacks.push(callback);
+        return this;
+    }
+
+    public header(headerText: RawMessage | string): ModalFormBox {
+        this.form.header(headerText);
+        return this;
+    }
+
+    public label(labelText: RawMessage | string): ModalFormBox {
+        this.form.label(labelText);
         return this;
     }
 

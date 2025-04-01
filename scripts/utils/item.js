@@ -1,5 +1,4 @@
 import { EnchantmentTypes, ItemLockMode, ItemStack } from "@minecraft/server";
-/** @type {ItemStackUtils} */
 export var ItemStackUtils;
 (function (ItemStackUtils) {
     function toJSON(item) {

@@ -15,10 +15,22 @@ export class ModalFormBox {
         this.cancelCallback = callback;
         return this;
     }
+    divider() {
+        this.form.divider();
+        return this;
+    }
     dropdown(label, options, defaultValueIndex, callback) {
         this.form.dropdown(this.formatLabel(label), options, defaultValueIndex);
         if (callback)
             this.callbacks.push(callback);
+        return this;
+    }
+    header(headerText) {
+        this.form.header(headerText);
+        return this;
+    }
+    label(labelText) {
+        this.form.label(labelText);
         return this;
     }
     async show(player) {

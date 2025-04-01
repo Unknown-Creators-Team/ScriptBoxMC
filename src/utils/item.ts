@@ -1,6 +1,5 @@
 import { EnchantmentTypes, ItemLockMode, ItemStack, RGB, Vector3 } from "@minecraft/server";
 
-/** @type {ItemStackUtils} */
 export namespace ItemStackUtils {
     export function toJSON(item: ItemStack): ItemStackJSON {
         const dynamicProperties = item.getDynamicPropertyIds().map((key) => {

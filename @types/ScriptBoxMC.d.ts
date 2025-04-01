@@ -52,308 +52,128 @@ declare module "@minecraft/server" {
     }
 }
 
-declare module "@minecraft/server-ui" {
-    /**
-     * @example showBasicActionFormBox.ts
-     * ```typescript
-     * function showBasicActionFormBox() {
-     *     const players = world.getPlayers();
-     *
-     *     const actionForm = new ActionFormBox("Example Action Form")
-     *         .body("This is an example of an action form.")
-     *         .button("First Button", "textures/item/diamond", (player) => {
-     *             player.sendMessage("First Button was clicked!");
-     *         })
-     *         .button("Second Button", "textures/item/emerald", (player) => {
-     *             player.sendMessage("Second Button was clicked!");
-     *         })
-     *         .cancel((player, cancelationReason) => {
-     *             player.sendMessage(`Action Form was cancelled. Reason: ${cancelationReason}`);
-     *         });
-     *
-     *     for(const player of players) {
-     *         actionForm.show(player);
-     *     }
-     * }
-     * ```
-     */
-    // class ActionFormBox {
-    //     constructor(title?: string);
-
-    //     /**
-    //      * @remarks
-    //      * This builder method sets the title for the modal dialog.
-    //      *
-    //      */
-    //     title(titleText: Minecraft.RawMessage | string): ActionFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Method that sets the body text for the modal form.
-    //      *
-    //      */
-    //     body(bodyText: Minecraft.RawMessage | string): ActionFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Adds a button to this form with an icon from a resource
-    //      * pack.
-    //      *
-    //      */
-    //     button(text: Minecraft.RawMessage | string, iconPath?: string, callback?: () => void): ActionFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Set the callback for when the form is cancelled.
-    //      */
-    //     cancel(callback: (cancelationReason?: FormCancelationReason) => void): ActionFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Creates and shows this modal popup form. Returns
-    //      * asynchronously when the player confirms or cancels the
-    //      * dialog.
-    //      *
-    //      * This function can't be called in read-only mode.
-    //      *
-    //      * @param player
-    //      * Player to show this dialog to.
-    //      * @throws This function can throw errors.
-    //      */
-    //     show(player: Player): Promise<void>;
-    // }
-
-    // /**
-    //  * @example showMessageFormBox.ts
-    //  * ```typescript
-    //  * function showMessageFormBox() {
-    //  *     const players = world.getPlayers();
-    //  *
-    //  *     const messageForm = new MessageFormBox("Example Message Form")
-    //  *         .title("Form Title")
-    //  *         .body("This is an example of a message form.")
-    //  *         .upperButton("Yes", (player) => {
-    //  *             player.sendMessage("You clicked Yes!");
-    //  *         })
-    //  *         .lowerButton("No", (player) => {
-    //  *             player.sendMessage("You clicked No!");
-    //  *         })
-    //  *         .cancel((player, cancelationReason) => {
-    //  *             player.sendMessage(`Form was cancelled. Reason: ${cancelationReason}`);
-    //  *         });
-    //  *
-    //  *     for (const player of players) {
-    //  *         messageForm.show(player);
-    //  *     }
-    //  * }
-    //  * ```
-    //  */
-    // class MessageFormBox {
-    //     constructor(title?: Minecraft.RawMessage | string);
-
-    //     /**
-    //      * @remarks
-    //      * This builder method sets the title for the modal dialog.
-    //      *
-    //      */
-    //     title(titleText: Minecraft.RawMessage | string): MessageFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Method that sets the body text for the modal form.
-    //      *
-    //      */
-    //     body(bodyText: Minecraft.RawMessage | string): MessageFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Method that sets the text for the upper button.
-    //      */
-    //     upperButton(text: Minecraft.RawMessage | string, callback: (player: Minecraft.Player) => void): MessageFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Method that sets the text for the lower button.
-    //      */
-    //     lowerButton(text: Minecraft.RawMessage | string, callback: (player: Minecraft.Player) => void): MessageFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Set the callback for when the form is cancelled.
-    //      */
-    //     cancel(
-    //         callback: (player: Minecraft.Player, cancelationReason?: MinecraftUI.FormCancelationReason) => void
-    //     ): MessageFormBox;
-
-    //     /**
-    //      * @remarks
-    //      * Creates and shows this modal popup form. Returns
-    //      * asynchronously when the player confirms or cancels the
-    //      * dialog.
-    //      *
-    //      * This function can't be called in read-only mode.
-    //      *
-    //      * @param player
-    //      * Player to show this dialog to.
-    //      * @throws This function can throw errors.
-    //      */
-    //     show(player: Minecraft.Player): Promise<void>;
-    // }
-
-    /**
-     * Used to create a fully customizable pop-up form for a
-     * player.
-     * @example showBasicModalForm.ts
-     * ```typescript
-     * import { world, DimensionLocation } from "@minecraft/server";
-     * import { ModalFormData } from "@minecraft/server-ui";
-     *
-     * function showBasicModalForm(log: (message: string, status?: number) => void, targetLocation: DimensionLocation) {
-     *   const players = world.getPlayers();
-     *
-     *   const modalForm = new ModalFormData().title("Example Modal Controls for §o§7ModalFormData§r");
-     *
-     *   modalForm.toggle("Toggle w/o default");
-     *   modalForm.toggle("Toggle w/ default", true);
-     *
-     *   modalForm.slider("Slider w/o default", 0, 50, 5);
-     *   modalForm.slider("Slider w/ default", 0, 50, 5, 30);
-     *
-     *   modalForm.dropdown("Dropdown w/o default", ["option 1", "option 2", "option 3"]);
-     *   modalForm.dropdown("Dropdown w/ default", ["option 1", "option 2", "option 3"], 2);
-     *
-     *   modalForm.textField("Input w/o default", "type text here");
-     *   modalForm.textField("Input w/ default", "type text here", "this is default");
-     *
-     *   modalForm
-     *     .show(players[0])
-     *     .then((formData) => {
-     *       players[0].sendMessage(`Modal form results: ${JSON.stringify(formData.formValues, undefined, 2)}`);
-     *     })
-     *     .catch((error: Error) => {
-     *       log("Failed to show form: " + error);
-     *       return -1;
-     *     });
-     * }
-     * ```
-     */
-    class ModalFormBox {
-        private form: ModalFormData;
-        private bodyText: string | undefined;
-        private canSetBody: boolean;
-        private callbacks: ((player: Player, response: any) => void)[];
-        private backCallback: (player: Player) => void;
-        private cancelCallback: (player: Player, reason?: FormCancelationReason) => void;
-        private formatLabel(label: RawMessage | string): string;
-        /**
-         * @remarks
-         * Method that sets the callback for when the form is
-         *
-         */
-        back(callback: (player: Player) => void): ModalFormBox;
-        /**
-         * @remarks
-         * Method that sets the body text for the modal form.
-         *
-         */
-        body(bodyText: string): ModalFormBox;
-        /**
-         * @remarks
-         * Method that sets the callback for when the form is
-         * cancelled.
-         *
-         */
-        cancel(callback: (player: Player, reason?: FormCancelationReason) => void): ModalFormBox;
-        /**
-         * @remarks
-         * Adds a dropdown with choices to the form.
-         *
-         */
-        dropdown(
-            label: RawMessage | string,
-            options: (RawMessage | string)[],
-            defaultValueIndex?: number,
-            callback?: (player: Player, response: string) => void
-        ): ModalFormBox;
-        /**
-         * @remarks
-         * Creates and shows this modal popup form. Returns
-         * asynchronously when the player confirms or cancels the
-         * dialog.
-         *
-         * This function can't be called in read-only mode.
-         *
-         * @param player
-         * Player to show this dialog to.
-         * @throws This function can throw errors.
-         */
-        show(player: Player): Promise<ModalFormResponse>;
-        /**
-         * @remarks
-         * Adds a numeric slider to the form.
-         *
-         */
-        slider(
-            label: RawMessage | string,
-            minimumValue: number,
-            maximumValue: number,
-            valueStep: number,
-            defaultValue?: number,
-            callback?: (player: Player, response: number) => void
-        ): ModalFormBox;
-        submitButton(submitButtonText: RawMessage | string): ModalFormBox;
-        /**
-         * @remarks
-         * Adds a textbox to the form.
-         *
-         */
-        textField(
-            label: RawMessage | string,
-            placeholder?: RawMessage | string,
-            defaultValue?: string,
-            callback?: (player: Player, response: string) => void
-        ): ModalFormBox;
-        /**
-         * @remarks
-         * This builder method sets the title for the modal dialog.
-         *
-         */
-        title(titleText: RawMessage | string): ModalFormBox;
-        /**
-         * @remarks
-         * Adds a toggle checkbox button to the form.
-         *
-         */
-        toggle(
-            label: RawMessage | string,
-            defaultValue?: boolean,
-            callback?: (player: Player, response: boolean) => void
-        ): ModalFormBox;
-    }
+import { Player, RawMessage } from "@minecraft/server";
+import { ActionFormResponse, FormCancelationReason } from "@minecraft/server-ui";
+export declare class ActionFormBox {
+    /** @private */ private form;
+    /** @private */ private callbacks;
+    /** @private */ private backCallback;
+    /** @private */ private cancelledCallback;
+    constructor(title?: string);
+    title(titleText: RawMessage | string): ActionFormBox;
+    body(bodyText: RawMessage | string): ActionFormBox;
+    button(text: RawMessage | string, iconPath?: string, callback?: () => void): ActionFormBox;
+    back(callback: (player: Player) => void): ActionFormBox;
+    cancel(callback: (cancelationReason?: FormCancelationReason) => void): ActionFormBox;
+    show(player: Player): Promise<ActionFormResponse>;
 }
 
-declare global {
-    interface ColorUtils {
-        ESCAPE: string;
-        MATCH_REGEXP: RegExp;
+import { Player, RawMessage } from "@minecraft/server";
+import { FormCancelationReason, MessageFormResponse } from "@minecraft/server-ui";
+export declare class MessageFormBox {
+    /** @private */ private form;
+    /** @private */ private upperCallback;
+    /** @private */ private lowerCallback;
+    /** @private */ private cancelCallback;
+    constructor(title?: RawMessage | string);
+    title(titleText: RawMessage | string): MessageFormBox;
+    body(bodyText: RawMessage | string): MessageFormBox;
+    upperButton(text: RawMessage | string, callback: (player: Player) => void): MessageFormBox;
+    lowerButton(text: RawMessage | string, callback: (player: Player) => void): MessageFormBox;
+    cancel(callback: (player: Player, cancelationReason?: FormCancelationReason) => void): MessageFormBox;
+    show(player: Player): Promise<MessageFormResponse>;
+}
 
-        clean(text: string): string;
-        includesColor(text: string): boolean;
-    }
+import { Player, RawMessage } from "@minecraft/server";
+import { FormCancelationReason, ModalFormResponse } from "@minecraft/server-ui";
+export declare class ModalFormBox {
+    /** @private */ private form;
+    /** @private */ private bodyText;
+    /** @private */ private canSetBody;
+    /** @private */ private callbacks;
+    /** @private */ private cancelCallback;
+    body(bodyText: string): ModalFormBox;
+    cancel(callback: (player: Player, reason?: FormCancelationReason) => void): ModalFormBox;
+    divider(): ModalFormBox;
+    dropdown(
+        label: RawMessage | string,
+        options: (RawMessage | string)[],
+        defaultValueIndex?: number,
+        callback?: (player: Player, response: string) => void
+    ): ModalFormBox;
+    header(headerText: RawMessage | string): ModalFormBox;
+    label(labelText: RawMessage | string): ModalFormBox;
+    show(player: Player): Promise<ModalFormResponse>;
+    slider(
+        label: RawMessage | string,
+        minimumValue: number,
+        maximumValue: number,
+        valueStep: number,
+        defaultValue?: number,
+        callback?: (player: Player, response: number) => void
+    ): ModalFormBox;
+    submitButton(submitButtonText: RawMessage | string): ModalFormBox;
+    textField(
+        label: RawMessage | string,
+        placeholder?: RawMessage | string,
+        defaultValue?: string,
+        callback?: (player: Player, response: string) => void
+    ): ModalFormBox;
+    title(titleText: RawMessage | string): ModalFormBox;
+    toggle(label: RawMessage | string, defaultValue?: boolean, callback?: (player: Player, response: boolean) => void): ModalFormBox;
+    /** @private */ private formatLabel;
+}
 
-    interface ItemStackUtils {
-        fromJSON(json: string): Minecraft.ItemStack;
-        toJSON(item: Minecraft.ItemStack): string;
-        minimizeJSON(json: string): string;
-    }
+/** @type {ColorUtils} */
+export declare namespace ColorUtils {
+    const ESCAPE = "\u00A7";
+    const MATCH_REGEXP: RegExp;
+    function clean(text: string): string;
+    function includesColor(text: string): boolean;
+}
 
-    interface ScoreboardUtils {
-        addObjective(id: string, display?: string): Minecraft.ScoreboardObjective;
-        getObjective(id: string): Minecraft.ScoreboardObjective;
-        deleteObjective(id: string): boolean;
-        getScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string): number | undefined;
-        addScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string, value: number): number;
-        setScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string, value: number): void;
-        resetScore(target: Minecraft.ScoreboardIdentity | Minecraft.Entity | string, objective: string): boolean;
+import { ItemLockMode, ItemStack, RGB, Vector3 } from "@minecraft/server";
+/** @type {ItemStackUtils} */
+export declare namespace ItemStackUtils {
+    export function toJSON(item: ItemStack): ItemStackJSON;
+    export function fromJSON(json: ItemStackJSON): ItemStack;
+    export function minimizeJSON(json: ItemStackJSON): ItemStackJSON;
+    interface ItemStackJSON {
+        typeId: string;
+        amount: number;
+        keepOnDeath?: boolean;
+        lockMode?: keyof typeof ItemLockMode;
+        nameTag?: string;
+        dynamicProperties?: Record<string, boolean | number | string | Vector3 | undefined>;
+        canDestroy?: string[];
+        canPlaceOn?: string[];
+        lore?: string[];
+        components?: {
+            durability?: {
+                damage?: number;
+            };
+            dyeable?: {
+                color?: RGB;
+            };
+            enchantable?: {
+                enchantments?: {
+                    level: number;
+                    type: string;
+                }[];
+            };
+        };
     }
+    export {};
+}
+
+import { Entity, ScoreboardIdentity, ScoreboardObjective } from "@minecraft/server";
+/** @type {ScoreboardUtils} */
+export declare namespace ScoreboardUtils {
+    function addObjective(id: string, display?: string): ScoreboardObjective;
+    function getObjective(id: string): ScoreboardObjective;
+    function deleteObjective(id: string): boolean;
+    function getScore(target: ScoreboardIdentity | Entity | string, objective: string): number | undefined;
+    function addScore(target: ScoreboardIdentity | Entity | string, objective: string, value: number): number;
+    function setScore(target: ScoreboardIdentity | Entity | string, objective: string, value: number): void;
+    function resetScore(target: ScoreboardIdentity | Entity | string, objective: string): boolean;
 }

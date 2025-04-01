@@ -1,4 +1,3 @@
-/** @type {ColorUtils} */
 export var ColorUtils;
 (function (ColorUtils) {
     ColorUtils.ESCAPE = "§";

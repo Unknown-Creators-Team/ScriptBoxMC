@@ -183,18 +183,19 @@ class ActionFormBox {
         if (response.canceled) {
             if (this.cancelledCallback)
                 this.cancelledCallback(response.cancelationReason);
-            return;
+            return response;
         }
         if (response.selection === undefined)
             throw new Error("Selection is undefined");
         if (response.selection === this.callbacks.length) {
             if (this.backCallback)
                 this.backCallback(player);
-            return;
+            return response;
         }
         const callback = this.callbacks[response.selection];
         if (callback)
             callback();
+        return response;
     }
 }
 
@@ -237,7 +238,7 @@ class MessageFormBox {
         if (response.canceled) {
             if (this.cancelCallback)
                 this.cancelCallback(player, response.cancelationReason);
-            return;
+            return response;
         }
         if (response.selection === 1) {
             if (this.upperCallback)
@@ -247,6 +248,7 @@ class MessageFormBox {
             if (this.lowerCallback)
                 this.lowerCallback(player);
         }
+        return response;
     }
 }
 
@@ -266,10 +268,22 @@ class ModalFormBox {
         this.cancelCallback = callback;
         return this;
     }
+    divider() {
+        this.form.divider();
+        return this;
+    }
     dropdown(label, options, defaultValueIndex, callback) {
         this.form.dropdown(this.formatLabel(label), options, defaultValueIndex);
         if (callback)
             this.callbacks.push(callback);
+        return this;
+    }
+    header(headerText) {
+        this.form.header(headerText);
+        return this;
+    }
+    label(labelText) {
+        this.form.label(labelText);
         return this;
     }
     async show(player) {
@@ -327,7 +341,6 @@ class ModalFormBox {
     }
 }
 
-/** @type {ColorUtils} */
 var ColorUtils;
 (function (ColorUtils) {
     ColorUtils.ESCAPE = "§";
@@ -342,7 +355,6 @@ var ColorUtils;
     ColorUtils.includesColor = includesColor;
 })(ColorUtils || (ColorUtils = {}));
 
-/** @type {ItemStackUtils} */
 var ItemStackUtils;
 (function (ItemStackUtils) {
     function toJSON(item) {
@@ -456,7 +468,6 @@ var ItemStackUtils;
     ItemStackUtils.minimizeJSON = minimizeJSON;
 })(ItemStackUtils || (ItemStackUtils = {}));
 
-/** @type {ScoreboardUtils} */
 var ScoreboardUtils;
 (function (ScoreboardUtils) {
     function addObjective(id, display) {

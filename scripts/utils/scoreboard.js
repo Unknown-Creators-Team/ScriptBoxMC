@@ -1,5 +1,4 @@
 import { world } from "@minecraft/server";
-/** @type {ScoreboardUtils} */
 export var ScoreboardUtils;
 (function (ScoreboardUtils) {
     function addObjective(id, display) {

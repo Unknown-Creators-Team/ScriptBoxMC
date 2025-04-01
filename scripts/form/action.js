@@ -40,18 +40,19 @@ export class ActionFormBox {
         if (response.canceled) {
             if (this.cancelledCallback)
                 this.cancelledCallback(response.cancelationReason);
-            return;
+            return response;
         }
         if (response.selection === undefined)
             throw new Error("Selection is undefined");
         if (response.selection === this.callbacks.length) {
             if (this.backCallback)
                 this.backCallback(player);
-            return;
+            return response;
         }
         const callback = this.callbacks[response.selection];
         if (callback)
             callback();
+        return response;
     }
 }
 //# sourceMappingURL=action.js.map

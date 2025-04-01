@@ -1,5 +1,5 @@
 import { Player, RawMessage } from "@minecraft/server";
-import { FormCancelationReason, MessageFormData } from "@minecraft/server-ui";
+import { FormCancelationReason, MessageFormData, MessageFormResponse } from "@minecraft/server-ui";
 
 export class MessageFormBox {
     /** @private */ private form: MessageFormData = new MessageFormData();
@@ -43,12 +43,12 @@ export class MessageFormBox {
         return this;
     }
 
-    public async show(player: Player): Promise<void> {
+    public async show(player: Player): Promise<MessageFormResponse> {
         const response = await this.form.show(player);
 
         if (response.canceled) {
             if (this.cancelCallback) this.cancelCallback(player, response.cancelationReason);
-            return;
+            return response;
         }
 
         if (response.selection === 1) {
@@ -56,5 +56,6 @@ export class MessageFormBox {
         } else if (response.selection === 0) {
             if (this.lowerCallback) this.lowerCallback(player);
         }
+        return response;
     }
 }

@@ -38,7 +38,7 @@ export class MessageFormBox {
         if (response.canceled) {
             if (this.cancelCallback)
                 this.cancelCallback(player, response.cancelationReason);
-            return;
+            return response;
         }
         if (response.selection === 1) {
             if (this.upperCallback)
@@ -48,6 +48,7 @@ export class MessageFormBox {
             if (this.lowerCallback)
                 this.lowerCallback(player);
         }
+        return response;
     }
 }
 //# sourceMappingURL=message.js.map
