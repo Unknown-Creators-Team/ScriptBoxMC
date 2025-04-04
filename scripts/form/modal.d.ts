@@ -9,7 +9,7 @@ export declare class ModalFormBox {
     body(bodyText: string): ModalFormBox;
     cancel(callback: (player: Player, reason?: FormCancelationReason) => void): ModalFormBox;
     divider(): ModalFormBox;
-    dropdown(label: RawMessage | string, options: (RawMessage | string)[], defaultValueIndex?: number, callback?: (player: Player, response: string) => void): ModalFormBox;
+    dropdown(label: RawMessage | string, options: (RawMessage | string)[], defaultValueIndex?: number, callback?: (player: Player, response: number) => void): ModalFormBox;
     header(headerText: RawMessage | string): ModalFormBox;
     label(labelText: RawMessage | string): ModalFormBox;
     show(player: Player): Promise<ModalFormResponse>;
