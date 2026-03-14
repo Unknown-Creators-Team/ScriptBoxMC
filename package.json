@@ -1,40 +1,41 @@
 {
-  "name": "scriptboxmc",
-  "version": "0.1.0",
-  "main": "./dist/main.js",
-  "dependencies": {
-    "@minecraft/server": "2.6.0-beta.1.26.3-stable"
-
-  },
-  "devDependencies": {
-    "@bedrock-apis/env-types": "^1.0.0-beta.6",
-    "@minecraft/server-ui": "2.1.0-beta.1.26.3-stable",
-    "@nano191225/scriptup": "^1.3.1",
-    "tsdown": "^0.21.2",
-    "typescript": "^5.9.3"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/main.d.ts",
-      "default": "./dist/main.js"
-    }
-  },
-  "files": [
-    "dist",
-    "LICENSE",
-    "README.md"
-  ],
-  "keywords": [
-    "minecraft",
-    "minecraft-bedrock",
-    "minecraft-script-api",
-    "scriptapi"
-  ],
-  "prepublishOnly": "scriptup build --release && node .github/workflows/ensure-dts-export.js",
-  "scripts": {
-    "build": "scriptup build --release",
-    "watch": "scriptup build --watch"
-  },
-  "type": "module",
-  "types": "./dist/main.d.ts"
+    "name": "script-box-mc",
+    "version": "0.1.0",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/main.d.ts",
+            "default": "./dist/main.js"
+        }
+    },
+    "main": "./dist/main.js",
+    "types": "./dist/main.d.ts",
+    "prepublishOnly": "scriptup build --release && node .github/workflows/ensure-dts-export.js",
+    "repository": "https://github.com/Unknown-Creators-Team/ScriptBoxMC",
+    "scripts": {
+        "build": "scriptup build --release",
+        "watch": "scriptup build --watch"
+    },
+    "dependencies": {
+        "@minecraft/server": "2.6.0-beta.1.26.3-stable",
+        "@minecraft/server-ui": "2.1.0-beta.1.26.3-stable"
+    },
+    "devDependencies": {
+        "@bedrock-apis/env-types": "^1.0.0-beta.6",
+        "mc-chalk": "^1.0.2",
+        "@nano191225/scriptup": "^1.3.2",
+        "tsdown": "^0.21.2",
+        "typescript": "^5.9.3"
+    },
+    "keywords": [
+        "minecraft",
+        "minecraft-bedrock",
+        "minecraft-script-api",
+        "scriptapi"
+    ],
+    "files": [
+        "dist",
+        "LICENSE",
+        "README.md"
+    ]
 }
