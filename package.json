@@ -1,24 +1,40 @@
 {
-  "name": "script-box-mc",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "build": "tsc && rollup -c && uglifyjs scripts/ScriptBoxMC.js -o scripts/ScriptBoxMC.min.js -c --source-map"
+  "name": "scriptboxmc",
+  "version": "0.1.0",
+  "main": "./dist/main.js",
+  "dependencies": {
+    "@minecraft/server": "2.6.0-beta.1.26.3-stable"
+
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Unknown-Creators-Team/ScriptBoxMC.git"
-  },
-  "author": "Nano191225, arutaka1220",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/Unknown-Creators-Team/ScriptBoxMC/issues"
-  },
-  "homepage": "https://github.com/Unknown-Creators-Team/ScriptBoxMC#readme",
   "devDependencies": {
-    "@minecraft/server": "2.0.0-beta.1.21.70-stable",
-    "@minecraft/server-ui": "2.0.0-beta.1.21.70-stable"
-  }
+    "@bedrock-apis/env-types": "^1.0.0-beta.6",
+    "@minecraft/server-ui": "2.1.0-beta.1.26.3-stable",
+    "@nano191225/scriptup": "^1.3.1",
+    "tsdown": "^0.21.2",
+    "typescript": "^5.9.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "minecraft",
+    "minecraft-bedrock",
+    "minecraft-script-api",
+    "scriptapi"
+  ],
+  "prepublishOnly": "scriptup build --release && node .github/workflows/ensure-dts-export.js",
+  "scripts": {
+    "build": "scriptup build --release",
+    "watch": "scriptup build --watch"
+  },
+  "type": "module",
+  "types": "./dist/main.d.ts"
 }

@@ -1,5 +1,19 @@
 import { Enchantment, EnchantmentType, EnchantmentTypes, ItemLockMode, ItemStack, PotionEffectType } from "@minecraft/server";
 
+declare module "@minecraft/server" {
+    interface ItemStack {
+        enchantment: {
+            getEnchant(enchantmentType: EnchantmentType | string): Enchantment | undefined;
+            getAllEnchants(): Enchantment[] | undefined;
+            addEnchant(enchantmentType: EnchantmentType | string, level: number): void;
+            canAddEnchant(enchantmentType: EnchantmentType | string, level: number): boolean | undefined;
+            removeEnchant(enchantmentType: EnchantmentType | string): void;
+            removeAllEnchants(): void;
+            hasEnchant: (enchantmentType: EnchantmentType | string) => boolean | undefined;
+        };
+    }
+}
+
 Object.defineProperties(ItemStack.prototype, {
     enchantment: {
         get: function () {
@@ -37,5 +51,6 @@ Object.defineProperties(ItemStack.prototype, {
                 },
             };
         },
+        configurable: true,
     },
 });
