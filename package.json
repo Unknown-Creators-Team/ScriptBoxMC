@@ -16,14 +16,12 @@
         "build": "scriptup build --release",
         "watch": "scriptup build --watch"
     },
-    "dependencies": {
-        "@minecraft/server": "2.6.0-beta.1.26.3-stable",
-        "@minecraft/server-ui": "2.1.0-beta.1.26.3-stable"
-    },
     "devDependencies": {
         "@bedrock-apis/env-types": "^1.0.0-beta.6",
-        "mc-chalk": "^1.0.2",
+        "@minecraft/server": "2.7.0-beta.1.26.10-stable",
+        "@minecraft/server-ui": "2.1.0-beta.1.26.10-stable",
         "@nano191225/scriptup": "^1.3.2",
+        "mc-chalk": "^1.0.2",
         "tsdown": "^0.21.2",
         "typescript": "^5.9.3"
     },
