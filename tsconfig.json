@@ -1,16 +1,16 @@
 {
     "include": ["src", "package"],
     "compilerOptions": {
-        "module": "es2022",
+        "module": "preserve",
         "target": "es2024",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "strict": true,
         "noLib": true,
         "types": ["@bedrock-apis/env-types"],
         "noEmit": true,
-        "baseUrl": ".",
         "paths": {
-            "ScriptBoxMC": ["package/main.ts"]
+            "*": ["./src/*"],
+            "ScriptBoxMC": ["./package/main.ts"]
         }
     }
 }
